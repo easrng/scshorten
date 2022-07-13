@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Redirecting...</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <script>
+      let urlStarts = [
+        "https://scratch.mit.edu/projects/",
+        "https://scratch.mit.edu/studios/",
+        "https://scratch.mit.edu/discuss/",
+        "https://scratch.mit.edu/discuss/topic/"
+      ];
+      let endex =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-+~=&/";
+
+      function encode(intcode) {
+        if (intcode < endex.length) {
+          return endex[intcode];
+        } else {
+          return (
+            encode(Math.floor(intcode / endex.length)) +
+            endex[intcode % endex.length]
+          );
+        }
+      }
+      function decode(charcode) {
+        if (charcode.length < 2) {
+          return endex.indexOf(charcode);
+        } else {
+          return (
+            decode(charcode.slice(0, -1)) * endex.length +
+            endex.indexOf(charcode.slice(-1))
+          );
+        }
+      }
+      if(location.pathname.length>1){
+      let decoded = decode(location.pathname.slice(1)).toString();
+      window.location.replace(urlStarts[decoded.slice(-1)] + decoded.slice(0, -1));
+      }else{
+        window.location.replace("https://scratch.mit.edu/projects/367966995/embed")
+      }
+    </script>
+  </body>
+</html>
